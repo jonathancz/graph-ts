@@ -1,52 +1,45 @@
-type AdjacencyList = {
-    [key: string]: string[];
-};
+import { Question } from './Question';
+import { Path } from './Path';
 
-type Question = {
-    id: string;
-    text: string;
-    // You can add more properties if needed
-};
-
-class Graph {
-    private adjacencyList: AdjacencyList;
-    private questions: { [id: string]: Question };
+export class Graph {
+    private adjacencyList: Map<Question, Path[]>;
 
     constructor() {
-        this.adjacencyList = {};
-        this.questions = {};
+        this.adjacencyList = new Map();
     }
 
     addQuestion(question: Question): void {
-        if (!this.questions[question.id]) {
-            this.questions[question.id] = question;
-            this.adjacencyList[question.id] = [];
+        if (!this.adjacencyList.has(question)) {
+            this.adjacencyList.set(question, []);
         }
     }
 
-    addEdge(questionId1: string, questionId2: string): void {
-        if (this.adjacencyList[questionId1]) {
-            this.adjacencyList[questionId1].push(questionId2);
+    addPath(fromQuestion: Question, toQuestion: Question): void {
+        const path = new Path(toQuestion);
+        if (this.adjacencyList.has(fromQuestion)) {
+            this.adjacencyList.get(fromQuestion)?.push(path);
         }
     }
 
-    getQuestion(id: string): Question | undefined {
-        return this.questions[id];
+    getNextQuestions(question: Question): Question[] {
+        return this.adjacencyList.get(question)?.map(path => path.nextQuestion) || [];
     }
 
-    getNextQuestions(id: string): Question[] {
-        return this.adjacencyList[id]?.map(qId => this.questions[qId]) || [];
+    describe(): void {
+        console.log("List of Questions:");
+        this.adjacencyList.forEach((_, question) => {
+            console.log(`- ${question.text}`);
+        });
+
+        console.log("\nGraph Visualization:");
+        this.visualizeGraph();
+    }
+
+
+    private visualizeGraph(): void {
+        this.adjacencyList.forEach((paths, question) => {
+            let connections = paths.map(path => `--> ${path.nextQuestion.text}`).join(' ');
+            console.log(`${question.text} ${connections}`);
+        });
     }
 }
-
-const graph = new Graph();
-
-graph.addQuestion({ id: "Q1", text: "What is your favorite color?" });
-graph.addQuestion({ id: "Q2", text: "What is your quest?" });
-graph.addQuestion({ id: "Q3", text: "What is the air-speed velocity of an unladen swallow?" });
-
-graph.addEdge("Q1", "Q2");
-graph.addEdge("Q1", "Q3");
-
-console.log(graph.getQuestion("Q1"));
-console.log(graph.getNextQuestions("Q1"));
