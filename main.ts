@@ -1,37 +1,35 @@
 import { Graph } from './Graph';
 import { Question } from './Question';
+import { Workflow } from './Workflow';
+import { Answer } from './Answer';
 
-const graph = new Graph();
+const workflow = new Workflow();
 
-// Questions related to basic computer troubleshooting
+// Create Questions
 const questions = [
-    new Question("Q1", "Is your computer turned on?"),
+    new Question("Q1", "Is the computer turned on?"),
     new Question("Q2", "Is the monitor turned on?"),
-    new Question("Q3", "Are all cables connected properly?"),
-    new Question("Q4", "Is the operating system loading up?"),
-    new Question("Q5", "Are you able to log in to your user account?"),
-    new Question("Q6", "Is the internet working on other devices?"),
-    new Question("Q7", "Are there any unusual noises coming from the computer?"),
-    new Question("Q8", "Is the computer overheating?"),
-    new Question("Q9", "Are error messages appearing on the screen?"),
-    new Question("Q10", "Have you tried restarting your computer?")
 ];
 
-// Adding questions to the graph
-questions.forEach(question => graph.addQuestion(question));
+// Add Questions to Workflow
+questions.forEach(question => workflow.addQuestion(question));
 
-// Establishing paths between questions
-// This is a simplified example - adjust the paths according to your logic
-graph.addPath(questions[0], questions[1]);
-graph.addPath(questions[1], questions[2]);
-graph.addPath(questions[1], questions[6]);
-graph.addPath(questions[2], questions[3]);
-graph.addPath(questions[3], questions[4]);
-graph.addPath(questions[4], questions[5]);
-graph.addPath(questions[5], questions[6]);
-graph.addPath(questions[6], questions[7]);
-graph.addPath(questions[7], questions[8]);
-graph.addPath(questions[8], questions[9]);
+// Set up paths with conditions
+// For simplicity, I'm using string answers and straightforward conditions
+workflow.addPath("Q1", "Q2", (answer: Answer) => answer === "yes");
+// ... other paths with conditions ...
 
-// Calling the describe method to print the graph
-graph.describe();
+// Set Answers to Some Questions
+let q1 = workflow.getQuestion("Q1");
+if (q1) {
+    q1.setAnswer("yes");
+}
+
+// ... set more answers as needed ...
+
+// Check Traversal Possibility
+if (workflow.canTraverse("Q1", "Q2")) {
+    console.log("Traversal from Q1 to Q2 is possible.");
+} else {
+    console.log("Traversal from Q1 to Q2 is not possible.");
+}

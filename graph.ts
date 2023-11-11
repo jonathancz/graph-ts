@@ -14,8 +14,8 @@ export class Graph {
         }
     }
 
-    addPath(fromQuestion: Question, toQuestion: Question): void {
-        const path = new Path(toQuestion);
+    addPath(fromQuestion: Question, toQuestion: Question, condition?: () => boolean): void {
+        const path = new Path(toQuestion, condition);
         if (this.adjacencyList.has(fromQuestion)) {
             this.adjacencyList.get(fromQuestion)?.push(path);
         }
