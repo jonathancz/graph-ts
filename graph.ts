@@ -28,7 +28,7 @@ export class Graph {
     describe(): void {
         console.log("List of Questions:");
         this.adjacencyList.forEach((_, question) => {
-            console.log(`- ${question.text}`);
+            console.log(`- ${question.id} : ${question.text}`);
         });
 
         console.log("\nGraph Visualization:");
@@ -37,9 +37,18 @@ export class Graph {
 
 
     private visualizeGraph(): void {
-        this.adjacencyList.forEach((paths, question) => {
-            let connections = paths.map(path => `--> ${path.nextQuestion.text}`).join(' ');
-            console.log(`${question.text} ${connections}`);
+        console.log("ASCII Graph Visualization:");
+
+        // Function to print a node and its immediate connections
+        const printConnections = (question: Question) => {
+            let connections = this.adjacencyList.get(question);
+            let connectedNodes = connections?.map(path => path.nextQuestion.id).join(', ');
+            console.log(`${question.id.padEnd(4)} -> ${connectedNodes}`);
+        };
+
+        // Iterate over each question in the adjacency list
+        this.adjacencyList.forEach((_, question) => {
+            printConnections(question);
         });
     }
 }
