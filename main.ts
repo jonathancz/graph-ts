@@ -7,8 +7,16 @@ const workflow = new Workflow();
 
 // Create Questions
 const questions = [
-    new Question("Q1", "Is the computer turned on?"),
+    new Question("Q1", "Is your computer turned on?"),
     new Question("Q2", "Is the monitor turned on?"),
+    new Question("Q3", "Are all cables connected properly?"),
+    new Question("Q4", "Is the operating system loading up?"),
+    new Question("Q5", "Are you able to log in to your user account?"),
+    new Question("Q6", "Is the internet working on other devices?"),
+    new Question("Q7", "Are there any unusual noises coming from the computer?"),
+    new Question("Q8", "Is the computer overheating?"),
+    new Question("Q9", "Are error messages appearing on the screen?"),
+    new Question("Q10", "Have you tried restarting your computer?")
 ];
 
 // Add Questions to Workflow
@@ -33,3 +41,5 @@ if (workflow.canTraverse("Q1", "Q2")) {
 } else {
     console.log("Traversal from Q1 to Q2 is not possible.");
 }
+
+workflow.describe();

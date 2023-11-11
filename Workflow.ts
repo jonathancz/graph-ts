@@ -55,5 +55,22 @@ export class Workflow {
         return path.isPathValid(fromQuestion.answer);
     }
 
+    describe(): void {
+        console.log("List of Questions:");
+        this.questions.forEach((_, question) => {
+            console.log(`- ${_.text}`);
+        });
+
+        console.log("\nGraph Visualization:");
+        this.visualizeGraph();
+    }
+
+    private visualizeGraph(): void {
+        this.paths.forEach((paths, question) => {
+            let connections = paths.map(path => `--> ${path.nextQuestion.text}`).join(' ');
+            console.log(`${question.text} ${connections}`);
+        });
+    }
+
     // Additional methods to manage and traverse the workflow
 }
